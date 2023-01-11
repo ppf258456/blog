@@ -1,0 +1,52 @@
+     ~~~~   非重点考虑
+
+博客类型表：
+            id   主键
+            blogClassification  博客类别  int()
+            blogClassificationName 类别名称  varchar(255)
+            createTime 创建时间      datetime
+
+博客列表：
+		id   主键       int 
+		name  博客名称   varchar(100)
+		author  作者（nickname） varchar(20)
+		createTime 创建时间      datetime
+        blogContent  博客内容     varchar(255)
+		Overhead state  顶置状态 （1 顶置 2 非顶置） int (1)    
+        blogClassification  博客类别  int()
+		
+个人：
+        id    主键    int
+        nickname  昵称  varchar(20)
+  ~~~~  gender   性别   int(1)
+        headPortrait  头像   varchar(255)   
+        username 账号   varchar(60)
+        password 密码   varchar(60)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+~~~~评论管理：
+        headPortrait  头像   varchar(255)  
+        nickname  昵称  varchar(20)
+        Content   内容  varchar(255)
+        ip         ip地址
+        UserFilling    用户状态  int(1)
