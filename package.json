@@ -16,6 +16,6 @@
   "scripts": {
     "start": "npx nodemon index.js"
   },
-  "repository": "https://github.com/ppf258456/https---github.com-ppf258456-blog.git",
+  "repository": "https://github.com/ppf258456/blog.git",
   "author": "ppf <916861792@qq.com>"
 }
