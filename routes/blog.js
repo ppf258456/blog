@@ -13,6 +13,7 @@ Router.use(bodyParser.json())
 let data = []
 
 
+
 //查询博客列表
 
 Router.get('/', (req, res) => {
@@ -66,7 +67,7 @@ Router.post('/addClass', (req, res) => {
                 console.log(err);
                 return
             }
-            if (result.length === 0) {
+            else if (result.length === 0) {
                 const addSql = `insert into blogclass (blogClassificationName) values ('${bcName}')`;
                 db.query(addSql, (err, result) => {
                     // console.log(result);

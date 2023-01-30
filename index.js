@@ -10,13 +10,14 @@ const db = require('./db/db')
  const { port } = require('./config/default');
 const bodyParser = require('body-parser') 
 
-
+//引入jwt
+const jwt = require('jsonwebtoken') 
 
 /*为app添加中间件处理跨域请求*/
 app.use((req, res, next)=> {
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept,Authorization");
     res.header('Access-Control-Allow-Credentials', true);
     res.header('X-Powered-By','3.2.1')
     res.header("Content-Type", "application/json;charset=utf-8");
@@ -46,8 +47,7 @@ app.use(express.urlencoded({extended:false}))
 
 app.use('/blog',require('./routes/blog'))
 app.use('/user',require('./routes/user'))
-
-
+app.use('/login',require('./routes/login'))
 
 
 
