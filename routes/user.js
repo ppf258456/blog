@@ -84,46 +84,6 @@ Router.put('/update/:id', (req, res) => {
         })
 })
 
-// 增加用户信息(注册)
-
-Router.post('/register', (req, res) => {
-    //获取前端数据
-    let username = req.body.username;
-    let psw = req.body.password;
-    let hp = req.body.headPortrait;
-    let nickname = req.body.nickname;
-    //判断该用户名是否存在
-    db.query(`select * from user where username = '${username}' `, (err, result) => {
-        if (err) {
-            console.log(err);
-            return
-        } else if (result.length == 0) {
-            db.query('insert into user set username=?,password=?,headPortrait=?,nickname=?',
-                [username, psw, hp, nickname], (err, result) => {
-                    if (err) {
-                        console.log(err);
-                        return
-                    } else if (result.affectedRows == 1) {
-                        res.json({
-                            msg: '注册成功',
-                            code: 200,
-                            data: result
-                        })
-                    } else {
-                        res.json({
-                            msg: '注册失败',
-                            code: 0
-                        })
-                    }
-                })
-        } else if (result.length == 1) {
-            res.json({
-                msg: '用户名重复，请重新输入！！！',
-                code: 1
-            })
-        }
-    })
-})
 
 // 删除用户(注销)
 

@@ -1,11 +1,11 @@
 //引入mysql
-
 const config = {
     port: 3000,
 }
 
 //博客增删改需要登录 权限验证
 //用户增删改查需要管理员登录 权限验证
+
 const new1 = ((req,res,next) => {
     try{
     //用户登录后才可访问
