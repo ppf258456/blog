@@ -1,5 +1,7 @@
+// registerController.js
+
 const User = require('../models/user');
-const {registerService} = require('../service/registerService');
+const registerService = require('../service/registerService');
 
 
 exports.register = async (req, res) => {
@@ -32,8 +34,8 @@ exports.register = async (req, res) => {
  */
 exports.logout = async (req, res, next) => {
     try {
-        const userId = req.body.id;
-        await registerService.logoutUser(userId);
+        const id = req.body.id;
+        await registerService.logout(id);
 
         // 清除 Cookie 和 Session
         req.session.destroy(err => {
