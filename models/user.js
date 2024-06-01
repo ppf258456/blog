@@ -69,7 +69,7 @@ const User = sequelize.define('User', {
      */
        userAge: {
         type: DataTypes.BIGINT,
-        allowNull: false,
+        allowNull: true,
         field: 'userAge',
         defaultValue: 0
         // get() {
@@ -108,7 +108,7 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING(191),
         allowNull: false,
         unique: true,
-        field: 'member_number'
+        field: 'memberNumber'
     },
     /**
      * 数量
@@ -116,7 +116,8 @@ const User = sequelize.define('User', {
      */
     num: {
         type: DataTypes.BIGINT,
-        allowNull: true
+        allowNull: true,
+        defaultValue: 0
     },
     /**
      * 用户地址

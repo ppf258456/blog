@@ -26,6 +26,8 @@ exports.getUserById = async (req, res, next) => {
 exports.findUser = async (req, res, next) => {
     try {
         const { identifier } = req.query;
+        /* 在 URL 输入框中输入 http://your-api-endpoint/api/users/find?identifier=yourValue */
+        // console.log(identifier);
         const users = await userService.findUser(identifier);
         if (!users) {
             return res.status(404).json({ message: 'User not found' });
