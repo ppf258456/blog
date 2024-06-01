@@ -5,7 +5,7 @@ const User = require('../models/user');
 router.get('/', async (req, res,next) => {
   try {
       const users = await User.findAll({
-        attributes: { exclude: ['password'] }
+        // attributes: { exclude: ['password'] }
     });
       // console.log(123);
       res.json(users);// 返回json数据

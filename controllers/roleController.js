@@ -1,6 +1,6 @@
-// controllers/roleController.js
+// roleController.js
 
-const User = require('../models/user');
+const roleService = require('../service/roleService');
 
 /**
  * 更新用户权限
@@ -12,45 +12,17 @@ const updateRole = async (req, res, next) => {
     try {
         const { id, role } = req.body;
 
-        // 检查是否提供了用户ID和新角色
-        if (!id || !role) {
-            return res.status(400).json({ message: 'User ID and new role are required' });
-        }
+        const userData = {
+            id,
+            role,
+            currentUserRole: req.currentUser.role,
+            currentUserId: req.currentUser.id
+        };
 
-        // 查找目标用户
-        const targetUser = await User.findByPk(id);
+        const result = await roleService.updateUserRole(userData);
 
-        // 如果目标用户不存在，则返回404错误
-        if (!targetUser) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // 获取当前用户的角色和ID
-        const currentUserRole = req.currentUser.role;
-        const currentUserId = req.currentUser.id;
-
-        // 检查当前用户是否有权限修改此用户
-        if (currentUserRole !== 'admin' && currentUserId !== targetUser.id) {
-            return res.status(403).json({ message: 'Forbidden: You can only update your own profile' });
-        }
-
-        // 检查是否允许更新到的新角色
-        const validRoles = ['admin', 'user', 'Audit'];
-        if (!validRoles.includes(role)) {
-            return res.status(400).json({ message: 'Invalid role' });
-        }
-
-        // 根据需求，admin只能更新'user'和'Audit'角色
-        if (currentUserRole === 'admin' && targetUser.role === 'admin') {
-            return res.status(403).json({ message: 'Admin can only update "user" and "Audit" roles' });
-        }
-
-        // 更新用户角色
-        targetUser.role = role;
-        await targetUser.save();
-
-        // 返回成功信息和更新后的用户信息
-        res.json({ message: 'Role updated successfully', user: targetUser });
+        // 返回结果
+        res.json(result);
     } catch (error) {
         // 捕获错误并传递给下一个中间件
         next(error);

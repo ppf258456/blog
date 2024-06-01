@@ -1,4 +1,3 @@
 // config/dotenv.js
+require('dotenv').config();
 
-const dotenv = require('dotenv');
-dotenv.config();
