@@ -1,6 +1,5 @@
 // registerController.js
 
-const User = require('../models/user');
 const registerService = require('../service/registerService');
 
 

@@ -1,12 +1,12 @@
 // app.js
-const dotenv = require('./config/dotenv');
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const sequelize = require('./config/db');
-const config =require('./config/config')
+const config =require('./config/database')
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
