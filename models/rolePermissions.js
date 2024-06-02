@@ -51,7 +51,24 @@ const RolePermission = sequelize.define('RolePermission', {
     }
 }, {
     tableName: 'rolepermissions', // 对应数据库中的表名
-    timestamps: true // 启用 Sequelize 自动添加的时间戳字段
+    timestamps: true, // 启用 Sequelize 自动添加的时间戳字段
+    indexes: [
+        {
+          name: "PRIMARY",
+          unique: true,
+          using: "BTREE",
+          fields: [
+            { name: "id" },
+          ],
+        },
+        {
+          name: "userId",
+          using: "BTREE",
+          fields: [
+            { name: "userId" },
+          ],
+        },
+      ],
 });
 
 module.exports = RolePermission;

@@ -1,5 +1,4 @@
 var DataTypes = require("sequelize").DataTypes;
-var _rolepermissions = require("./rolepermissions");
 
 function initModels(sequelize) {
   var rolepermissions = _rolepermissions(sequelize, DataTypes);
