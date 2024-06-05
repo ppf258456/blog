@@ -1,21 +1,18 @@
 // app.js
-
+require('dotenv').config({ path: './.env' });
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const sequelize = require('./config/db');
-const config =require('./config/database')
+const sequelize = require('./config/database');
+const config =require('./config/config')
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/user/userRouter');
-const roleRouter = require('./routes/admin/role');
-const loginRouter = require('./routes/login');
-const registerRouter = require('./routes/register');
+const registerRouter = require('./routes/registerRouter');
 
 const app = express();
 
@@ -34,6 +31,10 @@ app.use(express.urlencoded({ extended: false }));
 // 解析Cookie
 app.use(cookieParser());
 
+
+app.use('/register',registerRouter)
+
+
 // Session配置
 app.use(session({
   secret: process.env.SESSION_SECRET, // 在.env文件中设置一个秘密字符串
@@ -50,10 +51,6 @@ sequelize.sync().then(() => {
 
 // 路由设置
 app.use('/', indexRouter);
-app.use('/register', registerRouter);
-app.use('/login', loginRouter);
-app.use('/users', usersRouter);
-app.use('/role', roleRouter);
 
 // // 使用身份验证中间件
 // app.use(auth);

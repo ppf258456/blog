@@ -4,10 +4,13 @@
 // 验证邮箱格式
 // 检查邮箱是否符合规范
 // @ 符号前最大支持64字节 
+
 const emailRegex = /^[a-zA-Z0-9._-]{1,64}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 const passwordRegex = /^[a-zA-Z\d@$!%*?&]{8,}$/;
 const memberNumberRegex = /^\d+$/;
-const validRoles = ['admin', 'user', 'audit'];
+const validRoles = process.env.VALID_ROLES.split(',');
+
+const validAccountStatus = process.env.ACCOUNT_STATUS.split(',');
 
 exports.validateEmail = (email) => emailRegex.test(email);
 
@@ -17,4 +20,4 @@ exports.validateMemberNumber = (memberNumber) => memberNumberRegex.test(memberNu
 
 exports.validateRole = (role) => validRoles.includes(role);
 
-
+exports.validateAccountStatus = (status) => validAccountStatus.includes(status);
