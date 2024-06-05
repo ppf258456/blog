@@ -2,13 +2,21 @@
 const { User } = require('../models'); // 使用 index.js 导入模型
 const bcrypt = require('bcrypt');
 const { Op } = require('sequelize');
+const paginate = require('../utils/paginate');
 
-
-
-exports.getAllUsers = async () => {
+/**
+ * 获取所有用户
+ * @param {number} page - 当前页数
+ * @param {number} limit - 每页显示记录数
+ * @returns {Promise<Array>} - 包含用户对象的数组
+ */
+exports.getAllUsers = async ({ page, limit }) => {
     try {
+        const { offset } = paginate(page, limit);
         const users = await User.findAll({
-            attributes: { exclude: ['password'] }
+            attributes: { exclude: ['password'] },
+            limit,
+            offset
         });
         return users;
     } catch (error) {
@@ -41,7 +49,12 @@ exports.findUser = async (identifier) => {
 
         // 如果找到了用户，则直接返回结果
         if (users.length > 0) {
-            return users.map(user => ({ id: user.id }));
+            return users.map(user => ({ 
+                id: user.id,
+                name:user.name,
+                email:user.email, 
+                memberNumber:user.memberNumber,
+            }));
         } else {
             // 如果没找到用户，则按照会员号进行精确查询
             const user = await User.findOne({
@@ -52,7 +65,12 @@ exports.findUser = async (identifier) => {
 
             // 如果找到了用户，则返回结果
             if (user) {
-                return [{ id: user.id }];
+                return [{  
+                    id: user.id,
+                    name:user.name,
+                    email:user.email, 
+                    memberNumber:user.memberNumber, 
+                }];
             } else {
                 // 如果用户既不在名称中，也不在会员号中，则返回用户未找到
                 return null;
@@ -110,3 +128,4 @@ exports.deleteUsers = async (userIds) => {
         throw error;
     }
 };
+

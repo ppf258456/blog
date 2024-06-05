@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const roleController = require('../controllers/rolePermissionsController');
-const auth = require('../middlewares/jwtMiddleware');
-const { checkRole } = require('../middlewares/authMiddleware');
+const roleController = require('../../controllers/rolePermissionsController');
+const auth = require('../../middlewares/jwtMiddleware');
+const { checkRole } = require('../../middlewares/authMiddleware');
 
 // 更新用户权限
 router.put('/updateRole', auth, roleController.updateRole);

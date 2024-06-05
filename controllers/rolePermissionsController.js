@@ -47,6 +47,9 @@ const updateRole = async (req, res, next) => {
 };
 
 
+
+
+
 /**
  * 获取用户权限
  * @param {Object} req - 请求对象
@@ -63,8 +66,11 @@ exports.getUserPermissions = async (req, res, next) => {
     }
 };
 
+
+
+
 module.exports = {
     updateRole,
-    getRolePermission
-    
+    getRolePermission,
 };
+

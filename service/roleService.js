@@ -1,7 +1,7 @@
 // roleService.js
 
 const models = require('../models');
-
+const paginate = require('../utils/paginate');
 
 /**
  * 获取用户权限
@@ -74,3 +74,4 @@ exports.updateUserPermissionsAndRole = async ({ userId, role, canCreate, canRead
         throw error;
     }
 };
+

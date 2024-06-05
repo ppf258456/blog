@@ -13,13 +13,14 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user/userRouter');
-const roleRouter = require('./routes/role');
+const roleRouter = require('./routes/admin/role');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 
 const app = express();
 
-
+// 提供静态文件
+app.use(express.static(path.join(__dirname, 'public')));
 
 // 日志记录中间件
 app.use(logger('dev'));

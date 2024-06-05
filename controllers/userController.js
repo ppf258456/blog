@@ -1,9 +1,20 @@
 // userController.js
 const userService = require('../service/userService');
+const { paginate } = require('../utils/paginate');
 
+
+/**
+ * 获取所有用户
+ * @param {Object} req - 请求对象
+ * @param {Object} res - 响应对象
+ * @param {Function} next - 下一个中间件
+ */
 exports.getAllUsers = async (req, res, next) => {
     try {
-        const users = await userService.getAllUsers();
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10; // 默认每页显示10条记录
+        const { offset } = paginate(page, limit);
+        const users = await userService.getAllUsers({ page, limit, offset });
         res.json(users);
     } catch (error) {
         next(error);
@@ -26,6 +37,8 @@ exports.getUserById = async (req, res, next) => {
 exports.findUser = async (req, res, next) => {
     try {
         const { identifier } = req.query;
+        const page = req.query.page ? parseInt(req.query.page) : 1;
+        const limit = req.query.limit ? parseInt(req.query.limit) : 10;
         /* 在 URL 输入框中输入 http://your-api-endpoint/api/users/find?identifier=yourValue */
         // console.log(identifier);
         const users = await userService.findUser(identifier);
@@ -58,3 +71,4 @@ exports.deleteUsers = async (req, res, next) => {
         next(error);
     }
 };
+
