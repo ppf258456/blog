@@ -50,7 +50,7 @@ async function registerUser(username, email, password, member_number, avatar, in
   const newUser = await User.create({
     username,
     email,
-    password,
+    password,// 注意，这里传递的是哈希后的密码
     member_number,
     avatar,
     introduction,
@@ -60,6 +60,7 @@ async function registerUser(username, email, password, member_number, avatar, in
 
   return newUser;
 }
+
 
 module.exports = {
   registerUser

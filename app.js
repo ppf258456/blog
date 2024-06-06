@@ -9,13 +9,21 @@ const sequelize = require('./config/database');
 const config =require('./config/config')
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const http = require('http');
+
+const socketIo = require('socket.io');
+
 
 
 const indexRouter = require('./routes/index');
 const registerRouter = require('./routes/registerRouter');
+const loginRouter = require('./routes/loginRouter');
+const logoutRouter = require('./routes/logoutRouter');
+const checkOnlineRouter = require('./routes/checkOnlineRouter');
 
 const app = express();
-
+const server = http.createServer(app);
+const io = socketIo(server);
 // 提供静态文件
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -32,7 +40,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 
-app.use('/register',registerRouter)
+
 
 
 // Session配置
@@ -51,7 +59,10 @@ sequelize.sync().then(() => {
 
 // 路由设置
 app.use('/', indexRouter);
-
+app.use('/register',registerRouter)
+app.use('/login',loginRouter)
+app.use('/logout',logoutRouter)
+app.use('/checkOnline',checkOnlineRouter)
 // // 使用身份验证中间件
 // app.use(auth);
 
@@ -71,4 +82,4 @@ app.use(function(err, req, res, next) {
   res.json({ error: err.message }); // 修改返回为JSON格式
 });
 
-module.exports = app;
+module.exports = { app, server, io };

@@ -69,7 +69,7 @@ const User = sequelize.define('User', {
     allowNull: true, // 账号状态，可为空
     validate: {
       isIn: {
-        args: [process.env.ACCOUNT_STATUS.split(',')], // 可选值为 Activate, freeze, prohibit, stealth
+        args: [process.env.ACCOUNT_STATUS.split(',')], // 可选值为 online, freeze, prohibit, stealth,
         msg: 'Invalid account status.' // 无效的账号状态
       }
     }

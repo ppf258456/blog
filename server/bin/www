@@ -1,75 +1,49 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
+// 加载模块依赖
+const { app, server, io } = require('../../app'); // 确保使用解构赋值来导入
 
-var app = require('../../app');
-var debug = require('debug')('blog:server');
-var http = require('http');
+const debug = require('debug')('blog:server');
 
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || '8080');
+// 获取端口并设置到 Express 应用
+const port = normalizePort(process.env.PORT || '8080');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
+// 监听端口，所有网络接口
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-/**
- * Normalize a port into a number, string, or false.
- */
-
+// 将端口规范化为数字、字符串或 false
 function normalizePort(val) {
-  var port = parseInt(val, 10);
-
+  const port = parseInt(val, 10);
   if (isNaN(port)) {
-    // named pipe
+    // 命名管道
     return val;
   }
-
   if (port >= 0) {
-    // port number
+    // 端口号
     return port;
   }
-
   return false;
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
-
+// HTTP 服务器 "error" 事件监听器
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
-
-  var bind = typeof port === 'string'
+  const bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
-
-  // handle specific listen errors with friendly messages
+  // 用友好的消息处理特定的监听错误
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+      console.error(bind + ' 需要提升权限');
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+      console.error(bind + ' 已被使用');
       process.exit(1);
       break;
     default:
@@ -77,14 +51,21 @@ function onError(error) {
   }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
-
+// HTTP 服务器 "listening" 事件监听器
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
+  const addr = server.address();
+  const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+// 设置 socket.io 事件监听器
+io.on('connection', (socket) => {
+  console.log('A user connected');
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+  
+  // 可以添加更多的 socket 事件处理逻辑
+});

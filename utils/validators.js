@@ -6,7 +6,7 @@
 // @ 符号前最大支持64字节 
 
 const emailRegex = /^[a-zA-Z0-9._-]{1,64}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-const passwordRegex = /^[a-zA-Z\d@$!%*?&]{8,}$/;
+const passwordRegex = /^.{8,}$/;
 const memberNumberRegex = /^\d+$/;
 const validRoles = process.env.VALID_ROLES.split(',');
 
