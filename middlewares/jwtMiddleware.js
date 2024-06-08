@@ -21,6 +21,7 @@ const jwtMiddleware = async (req, res, next) => {
     }
     req.user = user;
     // console.log(user);
+   
     next();
   } catch (ex) {
     // 如果token无效或过期，返回401状态码和错误信息

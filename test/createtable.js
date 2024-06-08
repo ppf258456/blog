@@ -7,9 +7,9 @@ require('dotenv').config({ path: '../.env' });
 const sequelize = require('../config/database');
 
 const User = require('../models/User'); // 导入模型
-
+const Follow = require('../models/follow')
 // 同步所有模型
-sequelize.sync({ force: true }) // 设置 force: true 会先删除现有表然后重新创建表
+sequelize.sync({ force: false }) // 设置 force: true 会先删除现有表然后重新创建表
   .then(() => {
     console.log('Database & tables created!');
   })

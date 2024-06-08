@@ -1,12 +1,14 @@
 // logoutController.js 
+const {io} = require('../app')
+const checkOnlineMiddleware= require('../middlewares/checkOnlineMiddleware')
 const logoutService = require('../service/logoutService');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 // 在其他文件中
-const { io } = require('../app');
+
 
 // 处理退出登录请求
-exports.logout = async (req, res) => {
+const logout = async (req, res) => {
   
     // console.log('Logout controller triggered');
     try {
@@ -46,25 +48,17 @@ exports.logout = async (req, res) => {
 
 // 处理管理员强制下线请求
 // 修改为接受用户ID作为参数
-exports.forceLogout = async (req, res, userId, io) => { 
-  
-  console.log('io is defined:', typeof io !== 'undefined');
-  try {
-    // 调用服务函数执行下线用户的逻辑
-    const logoff = await logoutService.forceLogoutUser(userId);
-
-    if (logoff) {
-      // 使用socket.io向特定用户ID的客户端发送通知
-      io.to(userId).emit('forcedLogout', { message: 'You have been forcefully logged out by an administrator' });
-      
-      // 发送响应，表示用户被强制下线成功
-      res.status(200).json({ message: 'User forced logout successful' });
+const forceLogout = async (req, res) => {
+  const { user_id } = req.body;
+  await checkOnlineMiddleware(req, res, () => {
+    const result = logoutService.forceLogoutUser(user_id);
+    if (result) {
+      console.log(io);
+      io.to(user_id).emit('forcedLogout', 'You are being forcefully logged out.');
+      res.status(200).json({ message: 'Forced logout initiated' });
     } else {
-      // 如果更新用户状态失败，则发送错误响应
-      res.status(400).json({ message: 'Failed to force logout user' });
+      res.status(400).json({ message: 'Failed to force logout' });
     }
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: error.message });
-  }
+  });
 };
+module.exports = { logout, forceLogout };

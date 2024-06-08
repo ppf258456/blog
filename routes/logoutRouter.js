@@ -1,3 +1,4 @@
+// routers/logoutRouter.js
 const express = require('express');
 const router = express.Router();
 const { logout, forceLogout } = require('../controllers/logoutController');

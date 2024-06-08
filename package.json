@@ -26,8 +26,11 @@
     "supertest": "^7.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.24.7",
+    "@babel/core": "^7.24.7",
     "@babel/preset-env": "^7.24.7",
     "@babel/register": "^7.24.6",
+    "babel-cli": "^6.26.0",
     "chai": "^4.3.4",
     "mocha": "^10.4.0",
     "node-dev": "^8.0.0",
