@@ -73,8 +73,14 @@ exports.updateUser = async (req, res) => {
       // 过滤用户提交的数据，只保留允许修改的字段
       const filteredUserData = {};
       for (const field of allowedFields) {
-       if (req.body[field] !== undefined) {
-         filteredUserData[field] = req.body[field];
+        if (req.body[field] !== undefined) {
+          if (field === 'avatar' || field === 'background_image') {
+            // 如果是头像或背景图字段，对图片进行 base64 编码
+            const base64String = encodeBase64(req.body[field]);
+            filteredUserData[field] = base64String;
+          } else {
+            filteredUserData[field] = req.body[field];
+          }
         }
       }
       // 继续处理更新用户信息的逻辑
@@ -100,6 +106,20 @@ exports.deleteUser = async (req, res) => {
     const result = await userService.deleteUser(user_id);
     res.status(200).json(result);
   } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// 修改密码
+exports.changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const user_id = req.user.user_id;
+
+    const result = await userService.changePassword(user_id, oldPassword, newPassword);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Error:', error);
     res.status(500).json({ error: error.message });
   }
 };

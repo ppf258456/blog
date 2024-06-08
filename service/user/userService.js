@@ -68,3 +68,27 @@ exports.searchUsers = async (searchTerm) => {
     throw new Error(error.message);
   }
 };
+
+// 修改密码
+exports.changePassword = async (user_id, oldPassword, newPassword) => {
+  try {
+    const user = await this.getUserById(user_id);
+
+    // 验证旧密码
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      throw new Error('Old password is incorrect');
+    }
+
+    // 哈希新密码
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // 更新密码
+    user.password = hashedPassword;
+    await user.save();
+
+    return { message: 'Password updated successfully' };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};

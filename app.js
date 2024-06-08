@@ -21,6 +21,7 @@ const loginRouter = require('./routes/loginRouter');
 const logoutRouter = require('./routes/logoutRouter');
 const checkOnlineRouter = require('./routes/checkOnlineRouter');
 const userRouter = require('./routes/user/userRoute');
+const verificationRoute = require('./routes/verificationRoute');
 
 const app = express();
 const server = http.createServer(app);
@@ -65,6 +66,7 @@ app.use('/login',loginRouter)
 app.use('/logout',logoutRouter)
 app.use('/checkOnline',checkOnlineRouter)
 app.use('/user',userRouter)
+app.use('/verification',verificationRoute)
 // // 使用身份验证中间件
 // app.use(auth);
 

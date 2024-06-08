@@ -22,4 +22,7 @@ router.put('/:user_id',jwtMiddleware, checkUserOrAdminMiddleware, UserController
 // 删除用户
 router.delete('/:user_id',jwtMiddleware,checkUserOrAdminMiddleware, UserController.deleteUser);
 
+// 修改密码
+router.put('/changePassword', jwtMiddleware,checkUserOrAdminMiddleware, UserController.changePassword);
+
 module.exports = router;

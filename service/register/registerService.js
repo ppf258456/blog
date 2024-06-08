@@ -7,8 +7,8 @@ const {
   validateRole,
   validateAccountStatus
 } = require('../../utils/validators');
-
-async function registerUser(username, email, password, member_number, avatar, introduction, user_role, account_status) {
+const { encodeBase64 } = require('../../utils/base64');
+exports.registerUser=async(username, email, password, member_number, avatar, introduction, user_role, account_status,background_image)=> {
   // 验证输入信息
   if (!validateEmail(email)) {
     throw new Error('Invalid email format.');
@@ -45,7 +45,16 @@ async function registerUser(username, email, password, member_number, avatar, in
   if (existingMemberNumber) {
     throw new Error('Member number already exists.');
   }
-
+    // 如果没有设置背景图，使用默认值
+  if(!background_image){
+    background_image = process.env.DEFAULT_BACKGROUND_IMAGE;
+  }else {
+    background_image = encodeBase64(background_image);
+  }
+    // 头像转换为base64
+    if (avatar) {
+      avatar = encodeBase64(avatar);
+    }
   // 创建新用户
   const newUser = await User.create({
     username,
@@ -55,13 +64,12 @@ async function registerUser(username, email, password, member_number, avatar, in
     avatar,
     introduction,
     user_role,
-    account_status
+    account_status,
+    background_image
   });
 
   return newUser;
 }
 
 
-module.exports = {
-  registerUser
-};
+
