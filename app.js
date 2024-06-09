@@ -21,7 +21,7 @@ const loginRouter = require('./routes/loginRouter');
 const logoutRouter = require('./routes/logoutRouter');
 const checkOnlineRouter = require('./routes/checkOnlineRouter');
 const userRouter = require('./routes/user/userRoute');
-const verificationRoute = require('./routes/verificationRoute');
+const verificationRoute = require('./routes/emailVerificationRoute');
 
 const app = express();
 const server = http.createServer(app);

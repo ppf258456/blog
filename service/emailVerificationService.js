@@ -20,13 +20,12 @@ async function checkEmailExists(email) {
 
 // 发送验证码邮件
 async function sendVerificationEmail(email) {
-  if (!await checkEmailExists(email)) {
-    throw new Error('邮箱不存在');
-  }
 
+ // 生成验证码
   const code = generateVerificationCode();
+    // 设置验证码的过期时间
   verificationCodes[email] = { code, timestamp: Date.now() + 5 * 60 * 1000 }; // 5分钟后过期
-
+  // 配置邮件选项
   const mailOptions = {
     from: smtpConfig.auth.user,
     to: email,
@@ -35,6 +34,7 @@ async function sendVerificationEmail(email) {
   };
 
   try {
+    // 使用nodemailer发送邮件
     await transporter.sendMail(mailOptions);
   } catch (error) {
     console.error('发送邮件失败:', error);

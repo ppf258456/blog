@@ -9,6 +9,7 @@ const emailVerificationController = {
   sendVerificationEmail: async (req, res) => {
     const { email } = req.body;
     try {
+      // 直接发送验证码邮件
       await sendVerificationEmail(email);
       res.send('验证码已发送到您的邮箱');
     } catch (error) {
