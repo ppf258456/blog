@@ -1,4 +1,5 @@
-const { checkEmailExists, sendVerificationEmail, verifyCode, resetPassword } = require('../service/verificationService');
+// verificationController.js
+const { checkEmailExists, sendVerificationEmail, verifyCode } = require('../service/verificationService');
 
 const verificationController = {
   // 检查邮箱是否存在
@@ -27,7 +28,24 @@ const verificationController = {
   resetPassword: async (req, res) => {
     const { email, newPassword, confirmPassword, code } = req.body;
     try {
-      await resetPassword(email, newPassword, confirmPassword, code);
+      if (newPassword !== confirmPassword) {
+        throw new Error('两次输入的密码不一致');
+      }
+      if (!verifyCode(email, code)) {
+        throw new Error('验证码无效或已过期');
+      }
+
+      const user = await User.findOne({ where: { email } });
+      if (!user) {
+        throw new Error('用户不存在');
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword; // 更新加密后的密码
+      await user.save();
+
+      // 重置密码成功后，销毁验证码
+      delete verificationCodes[email];
       res.send('密码重置成功');
     } catch (error) {
       res.status(400).send(error.message);
