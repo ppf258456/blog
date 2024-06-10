@@ -8,6 +8,7 @@ const {
   validateAccountStatus
 } = require('../../utils/validators');
 const { encodeBase64 } = require('../../utils/base64');
+const { resizeAndEncodeImage } = require('../../utils/sharp');
 const { checkEmailExists, verifyCode } = require('../emailVerificationService');
 
 // 注册用户的服务函数
@@ -64,17 +65,16 @@ exports.registerUser = async (
     throw new Error('Verification code is invalid or expired.');
   }
 
-  // 如果没有设置背景图，使用默认值
+  // 使用 sharp 调整背景图大小并转换为 Base64
   if (!background_image) {
-    background_image = process.env.DEFAULT_BACKGROUND_IMAGE || 'default_background.jpg';
-  }
-  background_image = encodeBase64(background_image);
-
-  // 头像转换为base64
-  if (avatar) {
-    avatar = encodeBase64(avatar);
+    background_image = process.env.DEFAULT_BACKGROUND_IMAGE;
+    const backgroundImagePath = await resizeAndEncodeImage(background_image,300, 300)
+    background_image = encodeBase64(backgroundImagePath);
   }
 
+
+
+ 
   // 创建新用户
   const newUser = await User.create({
     username,

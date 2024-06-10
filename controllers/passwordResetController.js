@@ -1,36 +1,20 @@
-// emailVerificationRoute.js
-const express = require('express'); // 引入express模块
-const emailVerificationController = require('../controllers/emailVerificationController'); // 引入邮箱验证控制器
+// controllers/passwordResetController.js
+// 重置密码
+const passwordResetService = require('../service/passwordResetService'); // 引入密码重置服务
 
-const router = express.Router(); // 创建路由器
+const resetPassword = async (req, res) => {
+  const { email, code, newPassword, confirmPassword } = req.body;
 
-/**
- * POST 请求路由 '/send-verification-email'
- * 用于处理发送邮箱验证码的请求。
- * 请求体应包含用户邮箱字段：
- * {
- *   "email": "用户邮箱"
- * }
- * 如果邮箱存在，则发送验证码到该邮箱。
- * 响应:
- *  - 成功: 返回状态码200和"验证码已发送到您的邮箱"消息。
- *  - 失败: 返回状态码400和错误信息。
- */
-router.post('/send-verification-email', emailVerificationController.sendVerificationEmail); // 注册路由和处理发送验证码的函数
+  try {
+    // 调用服务层的 resetPassword 函数来重置密码
+    const result = await passwordResetService.resetPassword(email, code, newPassword, confirmPassword);
+    res.status(200).json({ message: result });
+  } catch (error) {
+    // 错误处理
+    res.status(400).json({ error: error.message });
+  }
+};
 
-/**
- * POST 请求路由 '/verify-code'
- * 用于处理邮箱验证码验证的请求。
- * 请求体应包含邮箱和验证码字段：
- * {
- *   "email": "用户邮箱",
- *   "code": "用户输入的验证码"
- * }
- * 验证用户输入的验证码是否正确且未过期。
- * 响应:
- *  - 成功: 返回状态码200和"验证码验证成功"消息。
- *  - 失败: 返回状态码400和错误信息。
- */
-router.post('/verify-code', emailVerificationController.verifyCode); // 注册路由和处理验证码验证的函数
-
-module.exports = router; // 导出路由器
+module.exports = {
+  resetPassword,
+};

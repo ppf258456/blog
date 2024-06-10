@@ -10,9 +10,10 @@ const config =require('./config/config')
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const http = require('http');
-
 const socketIo = require('socket.io');
-
+const multer = require('multer');
+const { upload } = require('./config/multerConfig');
+const sharp = require('sharp');
 
 
 const indexRouter = require('./routes/index');
@@ -22,6 +23,7 @@ const logoutRouter = require('./routes/logoutRouter');
 const checkOnlineRouter = require('./routes/checkOnlineRouter');
 const userRouter = require('./routes/user/userRoute');
 const verificationRoute = require('./routes/emailVerificationRoute');
+const passwordResetRoute = require('./routes/passwordResetRoute');
 
 const app = express();
 const server = http.createServer(app);
@@ -36,7 +38,7 @@ app.use(logger('dev'));
 app.use(express.json());
 
 // 解析URL编码格式的请求体
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // 解析Cookie
 app.use(cookieParser());
@@ -67,6 +69,7 @@ app.use('/logout',logoutRouter)
 app.use('/checkOnline',checkOnlineRouter)
 app.use('/user',userRouter)
 app.use('/verification',verificationRoute)
+app.use('/passwordResetRoute',passwordResetRoute)
 // // 使用身份验证中间件
 // app.use(auth);
 

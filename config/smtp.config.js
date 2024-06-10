@@ -7,7 +7,7 @@ module.exports = {
     port: 465,            // SMTP端口号，SSL通常为465
     secure: true,         // 使用SSL加密
     auth: {               // 邮箱认证信息
-        user: '916861792@qq.com',  // 邮箱地址
-        pass: 'zoeyewizlyngbdii'  // 邮箱授权码
+        user: 'epic0320@qq.com',  // 邮箱地址
+        pass: 'dgwamcqqatzkbdag'  // 邮箱授权码
     }
 };

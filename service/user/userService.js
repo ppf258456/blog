@@ -1,5 +1,5 @@
 // services/userService.js
-
+const { Op } = require('sequelize');
 const { User } = require('../../models');
 
 // 获取所有用户

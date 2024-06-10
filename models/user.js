@@ -29,7 +29,7 @@ const User = sequelize.define('User', {
     unique: true // 会员号，非空，唯一
   },
   avatar: {
-    type: DataTypes.STRING,
+    type: DataTypes.BLOB,
     allowNull: false // 头像，非空
   },
   introduction: {
@@ -52,7 +52,7 @@ const User = sequelize.define('User', {
     allowNull: false // 获赞数，非空
   },
   background_image: {
-    type: DataTypes.STRING,
+    type: DataTypes.BLOB,
     allowNull: true // 背景图，可为空
   },
   register_time: {
