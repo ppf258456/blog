@@ -26,9 +26,6 @@ const test = require('../middlewares/test')
  *  - 失败: 返回状态码400和错误信息。
  */
 // 用户注册路由，使用 multer 中间件处理文件
-router.post('/', upload.fields([
-    { name: 'avatar', maxCount: 1 },
-    { name: 'background_image', maxCount: 1 }
-  ]),registerController.register);
+router.post('/',registerController.register);
   
 module.exports = router;

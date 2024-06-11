@@ -1,4 +1,5 @@
 // checkExistenceRoute.js
+// 这个有无作用看你自己的需求
 const express = require('express');
 const checkExistenceController = require('../controllers/checkExistenceController');
 

@@ -51,4 +51,6 @@ router.delete('/:user_id',jwtMiddleware,checkUserOrAdminMiddleware, UserControll
 // 修改密码
 router.put('/changePassword', jwtMiddleware,checkUserOrAdminMiddleware, UserController.changePassword);
 
+// 修改邮箱
+// 这个后面再搞
 module.exports = router;

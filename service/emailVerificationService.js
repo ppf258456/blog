@@ -27,7 +27,7 @@ async function sendVerificationEmail(email) {
   verificationCodes[email] = { code, timestamp: Date.now() + 5 * 60 * 1000 }; // 5分钟后过期
   // 配置邮件选项
   const mailOptions = {
-    from:  `<${smtpConfig.auth.user}>`,
+    from:  `"大杂烩BLOG" <${smtpConfig.auth.user}>`,
     to: email,
     subject: '您的邮箱验证码',
     text: `您的验证码是：${code}，请在5分钟内使用它完成验证。`,

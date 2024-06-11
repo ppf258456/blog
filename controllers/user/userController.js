@@ -53,57 +53,48 @@ exports.getSerchUsers = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-// 更新用户
+// updateUser 是处理用户信息更新的异步函数
 exports.updateUser = async (req, res) => {
   try {
-      const  user_id  =  parseInt(req.params.user_id,10);  
-      const user  = await userService.getUserById(user_id);
-      if (!user) {
-          return res.status(404).json({ error: 'User not found' });
-      }
-       // 如果上传了文件，处理图片
-    if (req.file) {
-      
-      const imageBuffer = req.file.buffer; // 获取文件的 Buffer 数据
-      // 假设我们想要调整图片到的宽度和高度
-      const width = 800;
-      const height = 600;
-
-      // 使用 sharp 调整图片大小并转换为 Base64 编码
-      const base64Image = await resizeAndEncodeImage(imageBuffer, width, height);
-      // 假设 'avatar' 是数据库中存储图片 Base64 编码的字段
-      req.body.avatar = `data:image/jpeg;base64,${base64Image}`;
+    // 解析请求参数中的用户ID
+    const user_id = parseInt(req.params.user_id, 10);
+    console.log(user_id);
+    // 根据用户ID获取用户信息
+    const user = await userService.getUserById(user_id);
+    // 如果用户不存在，返回404错误
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
-      // 验证是否是管理员修改其他管理员的信息
-      if (req.user.user_id !== user_id && req.user.user_role === 'admin' && user.user_role === 'admin') {
-          return res.status(403).json({ error: 'Forbidden: Admin cannot update other admin\'s information' });
-        }
-      // 提取可更改字段
-      let allowedFields = ['username', 'avatar', 'introduction', 'background_image'];
+
+    // 验证是否是管理员修改其他管理员的信息
+    if (req.user.user_id !== user_id && req.user.user_role === 'admin' && user.user_role === 'admin') {
+      return res.status(403).json({ error: 'Forbidden: Admin cannot update other admin\'s information' });
+    }
+
+    // 提取可更改字段
+    let allowedFields = ['username', 'avatar', 'introduction', 'background_image'];
 
     // 如果是管理员，允许修改更多字段
     if (req.user.user_role === 'admin') {
-      allowedFields = ['username', 'avatar','background_image', 'introduction', 'user_role'];
+      allowedFields = ['username', 'avatar', 'background_image', 'introduction', 'user_role'];
     }
-      // 过滤用户提交的数据，只保留允许修改的字段
-      const filteredUserData = {};
-      for (const field of allowedFields) {
-        if (req.body[field] !== undefined) {
-          if (field === 'avatar' || field === 'background_image') {
-            // 如果是头像或背景图字段，对图片进行 base64 编码
-            const base64String = encodeBase64(req.body[field]);
-            filteredUserData[field] = base64String;
-          } else {
-            filteredUserData[field] = req.body[field];
-          }
-        }
+
+    // 过滤用户提交的数据，只保留允许修改的字段
+    const filteredUserData = {};
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) {
+        filteredUserData[field] = req.body[field];
       }
-      // 继续处理更新用户信息的逻辑
-       await userService.updateUser(user_id, filteredUserData);
-      res.status(200).json("update successful",filteredUserData);
+    }
+
+    // 继续处理更新用户信息的逻辑
+    await userService.updateUser(user_id, filteredUserData);
+    // 如果更新成功，返回200状态码和更新后的用户数据
+    res.status(200).json({ message: 'Update successful', ...filteredUserData });
   } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: error.message });
+    // 如果发生错误，打印错误信息，并返回500状态码和错误信息
+    console.error('Error:', error);
+    res.status(500).json({ error: error.message });
   }
 };
 
