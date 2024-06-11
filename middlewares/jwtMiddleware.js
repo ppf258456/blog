@@ -16,6 +16,8 @@ const jwtMiddleware = async (req, res, next) => {
    
     // 将解码后的用户信息存储到请求对象中，便于后续中间件或路由处理
     const user = await User.findByPk(decoded.userId);
+
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }

@@ -49,7 +49,7 @@ router.put('/:user_id',jwtMiddleware, checkUserOrAdminMiddleware, UserController
 router.delete('/:user_id',jwtMiddleware,checkUserOrAdminMiddleware, UserController.deleteUser);
 
 // 修改密码
-router.put('/changePassword', jwtMiddleware,checkUserOrAdminMiddleware, UserController.changePassword);
+router.put('/:user_id/changePassword', jwtMiddleware,checkUserOrAdminMiddleware, UserController.changePassword);
 
 // 修改邮箱
 // 这个后面再搞

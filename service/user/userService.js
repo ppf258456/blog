@@ -1,7 +1,7 @@
 // services/userService.js
 const { Op } = require('sequelize');
 const { User } = require('../../models');
-
+const bcrypt = require('bcrypt'); // 引入bcrypt库用于密码加密
 // 获取所有用户
 exports.getAllUsers = async () => {
   try {
@@ -91,4 +91,4 @@ exports.changePassword = async (user_id, oldPassword, newPassword) => {
   } catch (error) {
     throw new Error(error.message);
   }
-};
+};  

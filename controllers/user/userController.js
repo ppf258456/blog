@@ -4,7 +4,7 @@ const userService  = require('../../service/user/userService');
 const { paginate } = require('../../utils/paginate');
 const configMulter = require('../../config/multerConfig'); // 引入multer配置
 const sharp = require('../../utils/sharp'); // 引入sharp处理图片
-
+const jwtUser = require('../../middlewares/jwtMiddleware')
 // 获取所有用户（需管理员）
 exports.getAllUsers = async (req, res) => {
   try { // 获取页数和每页显示记录数
@@ -120,7 +120,9 @@ exports.deleteUser = async (req, res) => {
 exports.changePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
-    const user_id = req.user.user_id;
+    const user_id = req.params.user_id
+   
+    console.log(user_id);
 
     const result = await userService.changePassword(user_id, oldPassword, newPassword);
     res.status(200).json(result);

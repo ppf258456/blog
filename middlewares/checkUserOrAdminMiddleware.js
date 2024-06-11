@@ -2,10 +2,11 @@
 
 const checkUserOrAdmin = (req, res, next) => {
     // 检查用户是否是要修改的用户本人或者是管理员
-    // console.log(req.params);
+    console.log(req.params);
+    
     if (req.user.user_id !==  parseInt(req.params.user_id)   && req.user.user_role !== 'admin') {
-
-       
+         
+        console.log(req.user);
         return res.status(403).json({ error: 'Forbidden' });
     }
     
