@@ -4,7 +4,7 @@ const userService  = require('../../service/user/userService');
 const { paginate } = require('../../utils/paginate');
 const configMulter = require('../../config/multerConfig'); // 引入multer配置
 const sharp = require('../../utils/sharp'); // 引入sharp处理图片
-const jwtUser = require('../../middlewares/jwtMiddleware')
+
 // 获取所有用户（需管理员）
 exports.getAllUsers = async (req, res) => {
   try { // 获取页数和每页显示记录数

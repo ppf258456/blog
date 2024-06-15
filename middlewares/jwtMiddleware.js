@@ -1,6 +1,6 @@
 // middlewares/jwtMiddleware.js
 const jwt = require('jsonwebtoken');
-const User = require('../models/user'); // 确保引入正确的用户模型
+const {User} = require('../models'); // 确保引入正确的用户模型
 const jwtMiddleware = async (req, res, next) => {
  
   // 从请求头或Cookie中获取JWT token
@@ -29,6 +29,7 @@ const jwtMiddleware = async (req, res, next) => {
    
     next();
   } catch (ex) {
+    console.log(ex);
     // 如果token无效或过期，返回401状态码和错误信息
     res.status(401).json({ message: 'Invalid token' });
   }
