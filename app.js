@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const sequelize = require('./config/database');
 const config =require('./config/config')
+const moment = require('moment');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const http = require('http');
@@ -24,6 +25,7 @@ const checkOnlineRouter = require('./routes/checkOnlineRouter');
 const userRouter = require('./routes/user/userRoute');
 const verificationRoute = require('./routes/emailVerificationRoute');
 const passwordResetRoute = require('./routes/passwordResetRoute');
+const followRoute = require('./routes/follow/followRouter');
 
 const app = express();
 const server = http.createServer(app);
@@ -53,8 +55,14 @@ app.use(session({
   store: new SequelizeStore({ db: sequelize }), // 使用Sequelize存储session数据
   resave: false, // 如果session没有修改，不会保存
   saveUninitialized: true, // 保存未初始化的session
-  cookie: { secure: process.env.NODE_ENV === 'production' } // 在生产环境中使用安全cookie
-}));
+  cookie: { secure: process.env.NODE_ENV === 'production', 
+    }, // 在生产环境中使用安全cookie
+ // 在保存 session 数据之前转换时间
+//  beforeSave: async (req, session) => {
+//   const eightHoursLater = new Date(Date.now() + 8 * 60 * 60 * 1000); // 8小时后的时间，使用本地时间
+//   session.expires = eightHoursLater.toUTCString(); // 转换为 UTC 时间字符串
+// }
+  }));
 
 // 同步数据库
 sequelize.sync().then(() => {
@@ -70,6 +78,7 @@ app.use('/checkOnline',checkOnlineRouter)
 app.use('/user',userRouter)
 app.use('/verification',verificationRoute)
 app.use('/passwordResetRoute',passwordResetRoute)
+app.use('/follow',followRoute)
 // // 使用身份验证中间件
 // app.use(auth);
 

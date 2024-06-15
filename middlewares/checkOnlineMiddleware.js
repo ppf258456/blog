@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user');
 
 // 中间件函数：检查用户是否在线
 // 修改为异步函数并接收一个回调函数
