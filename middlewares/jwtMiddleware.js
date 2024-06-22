@@ -25,7 +25,7 @@ const jwtMiddleware = async (req, res, next) => {
       return res.status(404).json({ message: 'User not found' });
     }
     req.user = user;
-    // console.log(user);
+    console.log(user);
    
     next();
   } catch (ex) {

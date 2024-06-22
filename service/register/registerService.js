@@ -1,5 +1,5 @@
 // registerService.js
-const { User } = require('../../models');
+const { User,Class_ } = require('../../models');
 const {
   validateEmail,
   validatePassword,
@@ -88,5 +88,23 @@ exports.registerUser = async (
     background_image
   });
 
-  return newUser;
+   // 创建默认分组
+   const defaultFollowClass = await Class_.create({
+    class_name: 'Default',
+    class_type: 'follow',
+    user_id: newUser.id,
+    is_default: true
+  });
+
+  const defaultFansClass = await Class_.create({
+    class_name: 'Default',
+    class_type: 'fans',
+    user_id: newUser.id,
+    is_default: true
+  });
+  return {
+    newUser,
+    defaultFollowClass,
+    defaultFansClass
+  };
 };

@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('follows', {
-    id: {
+  return sequelize.define('follow', {
+    follow_id: {
       autoIncrement: true,
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true
     },
@@ -15,12 +15,20 @@ module.exports = function(sequelize, DataTypes) {
         key: 'user_id'
       }
     },
-    followee_id: {
+    followed_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'user',
         key: 'user_id'
+      }
+    },
+    classify_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      references: {
+        model: 'class',
+        key: 'class_id'
       }
     },
     is_mutual: {
@@ -30,31 +38,37 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'follows',
+    tableName: 'follow',
     timestamps: true,
+    paranoid: true,
     indexes: [
       {
         name: "PRIMARY",
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id" },
+          { name: "follow_id" },
         ]
       },
       {
         name: "follower_id",
-        unique: true,
         using: "BTREE",
         fields: [
           { name: "follower_id" },
-          { name: "followee_id" },
         ]
       },
       {
-        name: "followee_id",
+        name: "followed_id",
         using: "BTREE",
         fields: [
-          { name: "followee_id" },
+          { name: "followed_id" },
+        ]
+      },
+      {
+        name: "classify_id",
+        using: "BTREE",
+        fields: [
+          { name: "classify_id" },
         ]
       },
     ]
