@@ -25,13 +25,14 @@ const followController = {
     }
   },
 
-  // 获取用户的关注列表
+  // 获取用户某个分组的关注列表
   getFollowing: async (req, res, next) => {
     try {
       const { user_id } = req.params;
+      const class_id = req.query.class_id;
       const page = req.query.page || 1;
       const limit = req.query.limit || 20;
-      const following = await followService.getFollowing(user_id, page, limit);
+      const following = await followService.getFollowing(user_id, class_id,page, limit);
       res.status(200).json(following);
     } catch (err) {
       console.error('获取关注列表出错:', err);

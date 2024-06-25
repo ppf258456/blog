@@ -6,10 +6,10 @@ const { Fans, User } = require('../../models');
 
 const fanService = {
     // 获取用户的粉丝列表
-    getFollowers: async (user_id, page = 1, limit = 20) => {
+    getFollowers: async (user_id,class_id, page = 1, limit = 20) => {
       const { offset, limit: page_limit } = paginate(page, limit);
       return await Fans.findAll({
-        where: { user_id, deleteAt: null },
+        where: { user_id,classify_id:class_id, deleteAt: null },
         include: [{ model: User, as: 'follower' }],
         limit: page_limit,
         offset,
