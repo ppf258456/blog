@@ -12,6 +12,6 @@ router.post('/delete', followController.deleteFollow);
 router.get('/following/:user_id', followController.getFollowing);
 
 // GET /follow/isMutual/:follower_id/:fans_id - 检查两个用户是否互相关注
-router.get('/isMutual/:follower_id/:fans_id', followController.isMutual);
+router.get('/isMutual', followController.isMutual);
 
 module.exports = router;

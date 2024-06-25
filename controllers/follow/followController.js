@@ -42,7 +42,7 @@ const followController = {
 
   // 检查两个用户是否互相关注
   isMutual: async (req, res, next) => {
-    const { follower_id, followed_id  } = req.params;
+    const { follower_id, followed_id  } = req.body;
     try {
       const mutual = await followService.isMutual(follower_id, followed_id );
       res.status(200).json({ isMutual: mutual });
