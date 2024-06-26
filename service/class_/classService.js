@@ -114,6 +114,17 @@ const classService = {
     });
     return deletedRows > 0; // 返回是否删除成功
   },
+
+    // 获取 Class_ 记录的 class_type
+    getClassType: async (classify_id) => {
+      const classTypeEntry = await Class_.findOne({
+        where: { class_id: classify_id },
+      });
+      if (!classTypeEntry) {
+        throw new Error('分组不存在');
+      }
+      return classTypeEntry.class_type;
+    },
 };
 
 module.exports = classService;

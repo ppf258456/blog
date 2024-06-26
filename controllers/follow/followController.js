@@ -1,5 +1,5 @@
 const followService = require('../../service/follow/followService');
-
+const classService = require('../../service/class_/classService')
 const followController = {
   // 创建关注关系
   createFollow: async (req, res, next) => {
@@ -50,7 +50,21 @@ const followController = {
       console.error('检查互相关注关系出错:', err);
       next(err);
     }
-  }
+  },
+   // 更改关注的分组设置
+   updateFollowClassify: async (req, res, next) => {
+    const { follower_id, followed_id, new_classify_id } = req.body;
+    try {
+      const classType = await classService.getClassType(new_classify_id);
+      if (classType !== 'follow') {
+        return res.status(400).json({ message: '无效的分组类型' });
+      }
+      const result = await followService.updateFollowClassify(follower_id, followed_id, new_classify_id);
+      res.status(200).json({ message: '关注分组更新成功', result });
+    } catch (err) {
+      console.error('更新关注分组出错:', err);
+    }
+  },
 };
 
 module.exports = followController;

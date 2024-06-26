@@ -27,6 +27,7 @@ const verificationRoute = require('./routes/emailVerificationRoute');
 const passwordResetRoute = require('./routes/passwordResetRoute');
 const followRoute = require('./routes/follow/followRoute');
 const classRoute = require('./routes/class_/classRoutes');
+const fansRoute = require('./routes/fans/fansRoute');
 
 const app = express();
 const server = http.createServer(app);
@@ -81,6 +82,7 @@ app.use('/verification',verificationRoute)
 app.use('/passwordResetRoute',passwordResetRoute)
 app.use('/follow',followRoute)
 app.use('/class',classRoute)
+app.use('/fans',fansRoute)
 // // 使用身份验证中间件
 // app.use(auth);
 
