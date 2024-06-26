@@ -102,6 +102,12 @@ exports.registerUser = async (
     user_id: newUser.id,
     is_default: true
   });
+  const defaultCollectionsClass = await Class_.create({
+    class_name: 'Default',
+    class_type: 'collections',
+    user_id: newUser.id,
+    is_default: true
+  });
   return {
     newUser,
     defaultFollowClass,
