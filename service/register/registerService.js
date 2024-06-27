@@ -1,5 +1,5 @@
 // registerService.js
-const { User,Class_ } = require('../../models');
+const { User,Class_,coins } = require('../../models');
 const {
   validateEmail,
   validatePassword,
@@ -108,9 +108,15 @@ exports.registerUser = async (
     user_id: newUser.id,
     is_default: true
   });
+  const defaultCoins = await coins.create({
+    coins_number: 0,
+    user_id: newUser.id,
+  });
   return {
     newUser,
     defaultFollowClass,
-    defaultFansClass
+    defaultFansClass,
+    defaultCollectionsClass,
+    defaultCoins
   };
 };

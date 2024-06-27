@@ -15,6 +15,7 @@ const socketIo = require('socket.io');
 const multer = require('multer');
 const { upload } = require('./config/multerConfig');
 const sharp = require('sharp');
+const { dailyCoinsIncrement } = require('../src/cronJobs/');
 
 
 const indexRouter = require('./routes/index');
@@ -32,6 +33,7 @@ const fansRoute = require('./routes/fans/fansRoute');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+
 // 提供静态文件
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -66,6 +68,8 @@ app.use(session({
 // }
   }));
 
+  // 启动定时任务
+dailyCoinsIncrement.start();
 // 同步数据库
 sequelize.sync().then(() => {
   console.log('Database synchronized');
