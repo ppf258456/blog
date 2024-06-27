@@ -29,6 +29,7 @@ const passwordResetRoute = require('./routes/passwordResetRoute');
 const followRoute = require('./routes/follow/followRoute');
 const classRoute = require('./routes/class_/classRoutes');
 const fansRoute = require('./routes/fans/fansRoute');
+const socketService = require('./service/socket/socketService')
 
 const app = express();
 const server = http.createServer(app);
@@ -68,6 +69,8 @@ app.use(session({
 // }
   }));
 
+
+
   // 启动定时任务
 dailyCoinsIncrement.start();
 // 同步数据库
@@ -106,4 +109,7 @@ app.use(function(err, req, res, next) {
   res.json({ error: err.message }); // 修改返回为JSON格式
 });
 
-module.exports = { app, server, io };
+socketService(io);  // 将Socket.IO实例传递给socketService
+
+
+module.exports = { app, server };

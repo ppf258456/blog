@@ -17,7 +17,7 @@ router.post('/force-logout', jwtMiddleware, checkAdminMiddleware, async (req, re
   // 检查用户是否在线的中间件
   await checkOnlineMiddleware(req, res, () => {
     // 如果用户在线，执行强制下线逻辑
-    forceLogout(req, res, user_id);
+    forceLogout(req, res);
   });
 });
 

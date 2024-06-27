@@ -74,6 +74,7 @@ const coinService = {
 
  // 每天定时任务增加硬币
  dailyCoinsIncrement: async () => {
+  console.log("定时任务启动成功！");
   // 查询所有用户
   const users = await User.findAll();
   // 计算次日0点的时间

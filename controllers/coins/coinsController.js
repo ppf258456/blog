@@ -24,13 +24,6 @@ const coinController = {
       next(error);
     }
   },
-
-  // 每天定时任务增加硬币
-  dailyCoinsIncrement: async (req, res, next) => {
-    // 由于这是一个定时任务，通常不会通过HTTP请求触发
-    // 因此，这里不提供HTTP接口，而是通过cron或其他定时任务机制调用
-    // 此方法不需要在控制器中处理HTTP请求和响应
-  }
 };
 
 module.exports = coinController;

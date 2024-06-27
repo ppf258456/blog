@@ -2,7 +2,7 @@
 
 
 
-const User = require('../models/User');
+const User = require('../models/user');
 
 exports.logoutUser = async (user_id) => {
   try {
