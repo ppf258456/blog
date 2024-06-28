@@ -1,3 +1,4 @@
+// coinService.js
 const { coins, User, transactions } = require('../../models');
 // dailyCoinsIncrement 使用 Bull 队列
 const coinIncrementQueue = require('./coinIncrementQueue');
@@ -84,10 +85,11 @@ const coinService = {
   // 将每个用户作为一个任务添加到队列
   for (const user of users) {
     coinIncrementQueue.add({
-      userId: user.user_id,
+      user_id: user.user_id,
       nextDayMidnight,
     });
   }
+
 }
 };
 

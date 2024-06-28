@@ -16,7 +16,7 @@ const multer = require('multer');
 const { upload } = require('./config/multerConfig');
 const sharp = require('sharp');
 const { dailyCoinsIncrement } = require('../src/cronJobs/');
-
+const redis = require('redis');
 
 const indexRouter = require('./routes/index');
 const registerRouter = require('./routes/registerRouter');
@@ -34,6 +34,22 @@ const socketService = require('./service/socket/socketService')
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+
+// 创建 Redis 客户端
+const redisClient = redis.createClient();
+
+redisClient.on('connect', () => {
+  console.log('Connected to Redis');
+});
+
+redisClient.on('error', (err) => {
+  console.error('Redis error: ' + err);
+});
+
+// 将 Redis 客户端添加到 app 中，以便在路由中使用
+app.locals.redis = redisClient;
+
+
 
 // 提供静态文件
 app.use(express.static(path.join(__dirname, 'public')));

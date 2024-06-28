@@ -12,6 +12,7 @@ class DailyCoinsIncrement {
   start() {
     this.cronJob = cron.schedule('0 0 * * *', () => {
       coinService.dailyCoinsIncrement();
+      console.log("定时任务完成！");
     });
     console.log('Daily coins increment cron job started.');
   }

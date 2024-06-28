@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon ./server/bin/www",
-    "start": "node ./server/bin/www",
+ "start": "node server/bin/www",
+    "dev": "concurrently \"start-redis.bat\" \"nodemon server/bin/www\"",
     "test": "mocha"
   },
   "dependencies": {
@@ -41,6 +41,7 @@
     "@babel/register": "^7.24.6",
     "babel-cli": "^6.26.0",
     "chai": "^4.3.4",
+    "concurrently": "^8.2.2",
     "mocha": "^10.4.0",
     "node-dev": "^8.0.0",
     "nodemon": "^3.1.1",
