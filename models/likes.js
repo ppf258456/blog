@@ -21,7 +21,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     content_id: {
       type: DataTypes.BIGINT,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'contents',
+        key: 'content_id'
+      }
     },
     like_time: {
       type: DataTypes.DATE,
@@ -31,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     sequelize,
     tableName: 'likes',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",
@@ -56,6 +60,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "user_id" },
+        ]
+      },
+      {
+        name: "fk_likes_content_id",
+        using: "BTREE",
+        fields: [
+          { name: "content_id" },
         ]
       },
     ]

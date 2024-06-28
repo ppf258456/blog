@@ -21,7 +21,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     content_id: {
       type: DataTypes.BIGINT,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'contents',
+        key: 'content_id'
+      }
     },
     classfy_id: {
       type: DataTypes.BIGINT,
@@ -67,6 +71,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "classfy_id" },
+        ]
+      },
+      {
+        name: "fk_collections_content_id",
+        using: "BTREE",
+        fields: [
+          { name: "content_id" },
         ]
       },
     ]

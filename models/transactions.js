@@ -17,7 +17,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     content_id: {
       type: DataTypes.BIGINT,
-      allowNull: true
+      allowNull: false,
+      references: {
+        model: 'contents',
+        key: 'content_id'
+      }
     },
     content_type: {
       type: DataTypes.STRING(50),

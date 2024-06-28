@@ -1,4 +1,5 @@
-const coinService = require('../../models'); // 确保这里的路径与您的项目结构相匹配
+// coinsController.js
+const coinService = require('../../service/coins/coinService'); // 确保这里的路径与您的项目结构相匹配
 
 const coinController = {
   // 获取用户硬币数

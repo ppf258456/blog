@@ -30,6 +30,7 @@ const followRoute = require('./routes/follow/followRoute');
 const classRoute = require('./routes/class_/classRoutes');
 const fansRoute = require('./routes/fans/fansRoute');
 const socketService = require('./service/socket/socketService')
+const coinsRoutes = require('./routes/coins/coinsRoutes'); // 根据实际路径调整
 
 const app = express();
 const server = http.createServer(app);
@@ -106,6 +107,7 @@ app.use('/passwordResetRoute',passwordResetRoute)
 app.use('/follow',followRoute)
 app.use('/class',classRoute)
 app.use('/fans',fansRoute)
+app.use('/coins',coinsRoutes)
 // // 使用身份验证中间件
 // app.use(auth);
 

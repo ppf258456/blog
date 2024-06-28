@@ -8,8 +8,17 @@ var _user = require("./user");
 var _likes = require("./likes");
 var _collections = require("./collections");
 var _coins = require("./coins");
+var _sections = require("./sections");
+var _categories = require("./categories");
+var _contents = require("./contents");
+var _content_categories = require("./content_categories");
 
 function initModels(sequelize) {
+
+  var content_categories = _content_categories(sequelize, DataTypes);
+  var contents = _contents(sequelize, DataTypes);
+  var categories = _categories(sequelize, DataTypes);
+  var sections = _sections(sequelize, DataTypes);
   var transactions = _transactions(sequelize, DataTypes);
   var Class_ = _class_(sequelize, DataTypes);
   var Fans = _fans(sequelize, DataTypes);
@@ -20,6 +29,17 @@ function initModels(sequelize) {
   var collections = _collections(sequelize, DataTypes);
   var coins = _coins(sequelize, DataTypes);
 
+
+  categories.belongsToMany(contents, { as: 'content_id_contents', through: content_categories, foreignKey: "category_id", otherKey: "content_id" });
+  contents.belongsToMany(categories, { as: 'category_id_categories', through: content_categories, foreignKey: "content_id", otherKey: "category_id" });
+  content_categories.belongsTo(categories, { as: "category", foreignKey: "category_id"});
+  categories.hasMany(content_categories, { as: "content_categories", foreignKey: "category_id"});
+  content_categories.belongsTo(contents, { as: "content", foreignKey: "content_id"});
+  contents.hasMany(content_categories, { as: "content_categories", foreignKey: "content_id"});
+  contents.belongsTo(User, { as: "author", foreignKey: "author_id"});
+  User.hasMany(contents, { as: "contents", foreignKey: "author_id"});
+  categories.belongsTo(sections, { as: "section", foreignKey: "section_id"});
+  sections.hasMany(categories, { as: "categories", foreignKey: "section_id"});
   transactions.belongsTo(User, { as: "user", foreignKey: "user_id"});
   User.hasMany(transactions, { as: "transactions", foreignKey: "user_id"});
   coins.belongsTo(User, { as: "user", foreignKey: "user_id"});
@@ -55,6 +75,10 @@ function initModels(sequelize) {
     likes,
     collections,
     coins,
+    sections,
+    categories,
+    contents,
+    content_categories,
   };
 }
 module.exports = initModels;

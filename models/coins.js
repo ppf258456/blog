@@ -16,8 +16,12 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     coins_number: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false
+      type: DataTypes.DECIMAL(10,2),
+      allowNull: true
+    },
+    transaction_type: {
+      type: DataTypes.STRING(50),
+      allowNull: true
     },
     transaction_time: {
       type: DataTypes.DATE,

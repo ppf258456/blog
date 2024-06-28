@@ -25,6 +25,9 @@ function convertToUTCPlus8(date) {
         if (instance.updatedAt) {
           instance.updatedAt = convertToUTCPlus8(new Date(instance.updatedAt));
         }
+        if (instance.deletedAt) {
+          instance.deletedAt = convertToUTCPlus8(new Date(instance.deletedAt));
+        }
       });
     }
   });
