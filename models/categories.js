@@ -23,6 +23,7 @@ module.exports = function(sequelize, DataTypes) {
     sequelize,
     tableName: 'categories',
     timestamps: true,
+    paranoid: true, // 启用软删除
     indexes: [
       {
         name: "PRIMARY",

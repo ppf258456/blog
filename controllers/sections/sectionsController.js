@@ -74,7 +74,7 @@ const sectionsController = {
       }
     }
   },
-
+  // 删除分区
   deleteSection: async (req, res, next) => {
     try {
       const { section_id } = req.params;
@@ -86,6 +86,26 @@ const sectionsController = {
       next(error);
     }
   },
+// 获取被软删除的分区
+  getDeletedSections : async (req, res) => {
+    try {
+      const deletedSections = await sectionService.getDeletedSections();
+      res.status(200).json(deletedSections);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+
+  // 恢复被软删除的分区
+ restoreSection : async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await sectionService.restoreSection(id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+},
 };
 
 module.exports = sectionsController;
