@@ -19,6 +19,7 @@ module.exports = function(sequelize, DataTypes) {
     sequelize,
     tableName: 'sections',
     timestamps: true,
+    paranoid: true, // 启用软删除
     indexes: [
       {
         name: "PRIMARY",

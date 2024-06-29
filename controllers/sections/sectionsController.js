@@ -78,6 +78,7 @@ const sectionsController = {
   deleteSection: async (req, res, next) => {
     try {
       const { section_id } = req.params;
+   
       const result = await sectionService.deleteSection(section_id);
       res.status(200).json({ success: true });
     } catch (error) {

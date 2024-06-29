@@ -100,17 +100,37 @@ console.log(section_name.length);
     }
   },
 
-  // 删除分区
   deleteSection: async (section_id) => {
+    const transaction = await sections.sequelize.transaction();
     try {
-      const deletedSection = await sections.destroy({
-        where: { section_id: section_id },
+      // 先查找分区是否存在
+      const section = await sections.findOne({
+        where: { section_id: section_id, deletedAt: null },
+        transaction,
       });
-      if (!deletedSection) {
+  
+      if (!section) {
         throw new Error(`找不到ID为 ${section_id} 的分区，无法删除`);
       }
+      console.log('找到分区:', section);
+  
+      // 更新分区表的 deletedAt 字段
+      const result  = await sections.update(
+        { deletedAt: new Date() },
+        { where: { section_id: section_id, deletedAt: null }, transaction } // 只更新未被软删除的记录
+      );
+  
+      console.log('Updated Row Count:', result );
+  
+      if (result === 0) {
+        await transaction.rollback();
+        return { success: false, message: `找不到ID为 ${section_id} 的分区，无法删除` };
+      }
+  
+      await transaction.commit();
       return { success: true };
     } catch (error) {
+      await transaction.rollback();
       throw new Error(`删除分区时出错: ${error.message}`);
     }
   },
