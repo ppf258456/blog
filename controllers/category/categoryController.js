@@ -70,6 +70,17 @@ const getDeletedCategories = async (req, res) => {
   }
 };
 
+// 获取某个分区下的所有分类
+const getCategoriesBySection = async (req, res) => {
+  try {
+    const categoriesList = await categoryService.getCategoriesBySection(req.params.section_id);
+    res.status(200).json(categoriesList);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 module.exports = {
   createCategory,
   getAllCategories,
@@ -77,5 +88,6 @@ module.exports = {
   updateCategory,
   deleteCategory,
   restoreCategory,
-  getDeletedCategories
+  getDeletedCategories,
+  getCategoriesBySection
 };

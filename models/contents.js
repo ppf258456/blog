@@ -58,7 +58,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     published_at: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     tags: {
       type: DataTypes.STRING(255),

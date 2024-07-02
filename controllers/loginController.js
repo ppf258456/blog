@@ -6,7 +6,7 @@ async function login(req, res) {
 
   try {
     const token = await loginService.loginUser(member_number, password);
-    console.log(token);
+ 
     // localStorage=token
     
     res.status(200).json({message:"login successful", token });
