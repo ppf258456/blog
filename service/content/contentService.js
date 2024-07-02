@@ -24,6 +24,106 @@ const contentService = {
       throw new Error(`创建内容时出错: ${error.message}`);
     }
   },
+  // 获取草稿列表
+  getDrafts: async (author_id) => {
+    try {
+      const drafts = await contents.findAll({
+        where: {
+          author_id,
+          status: 0 // 草稿状态码
+        }
+      });
+
+      return drafts;
+    } catch (error) {
+      throw new Error(`获取草稿列表时出错: ${error.message}`);
+    }
+  },
+
+ // 更新草稿
+ updateContent: async (content_id, contentData, categoryIds) => {
+  const transaction = await contents.sequelize.transaction();
+  try {
+    await contents.update(contentData, {
+      where: { content_id },
+      transaction
+    });
+
+    // 先删除所有关联的分类
+    await content_categories.destroy({
+      where: { content_id },
+      transaction
+    });
+
+    // 创建新的分类关联
+    const categoryAssociations = categoryIds.map(category_id => ({
+      content_id,
+      category_id
+    }));
+
+    await content_categories.bulkCreate(categoryAssociations, { transaction });
+
+    await transaction.commit();
+
+    const updatedContent = await contents.findByPk(content_id);
+    return updatedContent;
+  } catch (error) {
+    await transaction.rollback();
+    throw new Error(`更新内容时出错: ${error.message}`);
+  }
+},
+
+// 更新并提交审核
+updateAndSubmitForReview: async (content_id, contentData, categoryIds) => {
+  const transaction = await contents.sequelize.transaction();
+  try {
+    // 更新内容
+    await contents.update(contentData, {
+      where: { content_id },
+      transaction
+    });
+
+    // 先删除所有关联的分类
+    await content_categories.destroy({
+      where: { content_id },
+      transaction
+    });
+
+    // 创建新的分类关联
+    const categoryAssociations = categoryIds.map(category_id => ({
+      content_id,
+      category_id
+    }));
+
+    await content_categories.bulkCreate(categoryAssociations, { transaction });
+
+    await transaction.commit();
+
+    const updatedContent = await contents.findByPk(content_id);
+    return updatedContent;
+  } catch (error) {
+    await transaction.rollback();
+    throw new Error(`更新并提交审核时出错: ${error.message}`);
+  }
+},
+
+    // 删除草稿（物理删除）
+    deleteContent: async (content_id) => {
+      try {
+        const result = await contents.destroy({
+          where: { content_id }
+        });
+  
+        if (result === 0) {
+          throw new Error('未找到要删除的内容');
+        }
+  
+        return result;
+      } catch (error) {
+        throw new Error(`删除内容时出错: ${error.message}`);
+      }
+    },
+
 
   // 根据ID获取内容
   getContentById: async (content_id) => {
@@ -40,7 +140,7 @@ const contentService = {
       });
 
       if (!content) {
-        throw new Error(`找不到ID为 ${content_id} 的内容`);
+        throw new Error(`内容不存在`);
       }
 
       return content;
@@ -140,7 +240,7 @@ const contentService = {
     try {
       const content = await contents.findOne({ where: { content_id }, paranoid: false });
 
-      
+
       if (!content) {
         throw new Error(`找不到ID为 ${content_id} 的已软删除内容，恢复失败`);
       }
@@ -156,7 +256,7 @@ const contentService = {
       throw new Error(`恢复软删除内容时出错: ${error.message}`);
     }
   },
- // 获取所有内容列表（审核用）
+ // 获取所有内容列表
  getAllContents: async () => {
   try {
     const allContents = await contents.findAll({
@@ -170,7 +270,15 @@ const contentService = {
           model: User,
           as: 'author'
         }
-      ]
+      ],
+      where: {
+        [Op.or]: [
+          { status: 4 }, // 网站用户可查看
+          { status: 1 }, // 审核可查看
+          { status: { [Op.in]: [2, 3] } }, // 作者和审核可查看
+          { status: { [Op.is]: 0 } } // 考虑草稿状态（status 为 0）
+        ]
+      }
     });
 
     return allContents;
@@ -180,10 +288,10 @@ const contentService = {
 },
 
 // 获取某作者的所有作品
-getContentsByAuthor: async (userId) => {
+getContentsByAuthor: async (user_id) => {
   try {
     const authorContents = await contents.findAll({
-      where: { author_id: userId },
+      where: { author_id: user_id },
       include: [
         {
           model: categories,
