@@ -140,6 +140,7 @@ const contentService = {
     try {
       const content = await contents.findOne({ where: { content_id }, paranoid: false });
 
+      
       if (!content) {
         throw new Error(`找不到ID为 ${content_id} 的已软删除内容，恢复失败`);
       }
