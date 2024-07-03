@@ -32,8 +32,8 @@ const fansRoute = require('./routes/fans/fansRoute');
 const socketService = require('./service/socket/socketService')
 const coinsRoutes = require('./routes/coins/coinsRoutes'); 
 const sectionsRoute = require('./routes/sections/sectionsRoute');
-const categoryRoute = require('./routes/category/categoryRoutes');
-const contentRoute = require('./routes/content/contentRoute');
+
+
 
 const app = express();
 const server = http.createServer(app);
@@ -112,8 +112,8 @@ app.use('/class',classRoute)
 app.use('/fans',fansRoute)
 app.use('/coins',coinsRoutes)
 app.use('/sections',sectionsRoute)
-app.use('/category',categoryRoute)
-app.use('/content',contentRoute)
+
+
 // // 使用身份验证中间件
 // app.use(auth);
 
